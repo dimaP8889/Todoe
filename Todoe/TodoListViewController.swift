@@ -9,9 +9,8 @@
 import UIKit
 
 class ToDoListViewController: UITableViewController {
-
     
-    let itemArray = ["lol", "lil" , "lal"]
+    var itemArray = ["lol", "lil" , "lal"]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,14 +39,39 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         print(itemArray[indexPath.row])
-        tableView.deselectRow(at: indexPath, animated: true)
         
-        if tableView.cellForRow(at: indexPath)?.accessoryType = .none {
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        } else {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
+    //MARK - Add New Items
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Todoye", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            //Add item Pressed
+            
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create New Item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
