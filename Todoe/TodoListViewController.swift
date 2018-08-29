@@ -11,9 +11,15 @@ import UIKit
 class ToDoListViewController: UITableViewController {
     
     var itemArray = ["lol", "lil" , "lal"]
+    
+    var defaults = UserDefaults()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let items = defaults.array(forKey: "ToDoList") as? [String] {
+            itemArray = items
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -40,6 +46,10 @@ class ToDoListViewController: UITableViewController {
         
         print(itemArray[indexPath.row])
         
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
+        
+        
+        
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
@@ -61,6 +71,7 @@ class ToDoListViewController: UITableViewController {
             //Add item Pressed
             
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "ToDoList")
             self.tableView.reloadData()
         }
         
